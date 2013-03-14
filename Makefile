@@ -32,7 +32,7 @@ smart: smart.log
 ###################################################################
 
 MAP_ARGS = --family="Cyclone II"
-FIT_ARGS = --part=auto
+FIT_ARGS = --part=EP2C35F672C6
 ASM_ARGS =
 STA_ARGS =
 
