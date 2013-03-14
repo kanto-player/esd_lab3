@@ -13,10 +13,10 @@ entity de2_fm_synth_control is
         readdata   : out std_logic_vector(15 downto 0);
         writedata  : in  std_logic_vector(15 downto 0);
 
-        note_div   : out unsigned(9 downto 0);
-        mod_depth  : out unsigned(3 downto 0);
-        volume     : out unsigned(3 downto 0);
-        active     : out std_logic;
+        fm_synth_note   : out std_logic_vector(9 downto 0);
+        fm_synth_mod_depth  : out std_logic_vector(3 downto 0);
+        fm_synth_volume     : out std_logic_vector(3 downto 0);
+        fm_synth_en     : out std_logic
     );
 end de2_fm_synth_control;
 
@@ -26,21 +26,21 @@ begin
     begin
         if rising_edge(clk) then
             if reset_n = '0' then
-                note_div <= x"300";
-                mod_depth <= x"F";
-                volume <= x"F";
-                active <= '0';
+                fm_synth_note <= x"300";
+                fm_synth_mod_depth <= x"F";
+                fm_synth_volume <= x"F";
+                fm_synth_en <= '0';
             else
                 if chipselect = '1' and write = '1' then
                     case address(4 downto 3) is
                         when "00" =>
-                            note_div <= unsigned(writedata(9 downto 0));
+                            fm_synth_note <= writedata(9 downto 0);
                         when "01" =>
-                            note_div <= unsigned(writedata(3 downto 0));
+                            fm_synth_note <= writedata(3 downto 0);
                         when "10" =>
-                            volume <= unsigned(writedata(3 downto 0));
+                            fm_synth_volume <= writedata(3 downto 0);
                         when "11" =>
-                            volume <= writedata(0);
+                            fm_synth_en <= writedata(0);
                     end case;
                 end if;
             end if;
