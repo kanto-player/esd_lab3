@@ -13,3 +13,6 @@
 *.pin
 *.pof
 *.qws
+*.log
+*.chg
+/output_files
