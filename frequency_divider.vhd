@@ -17,7 +17,7 @@ end frequency_divider;
 
 architecture rtl of frequency_divider is
     signal divider_old  : std_logic_vector(9 downto 0) := (others => '0');
-    signal count        : unsigned(9 downto 0) := x"1";
+    signal count        : unsigned(9 downto 0) := "0000000001";
 begin
     process(clk)
     begin
@@ -28,11 +28,11 @@ begin
 
             -- if divider value changes, reset count
             if divider /= divider_old then
-                count <= x"1";
+                count <= (9 downto 1 => '0') & '1';
 
             -- if count reached, clock high and reset
             elsif count = unsigned(divider) then
-                count <= x"1";
+                count <= (9 downto 1 => '0') & '1';
                 clk_out <= '1';
 
             -- otherwise, just increment count
