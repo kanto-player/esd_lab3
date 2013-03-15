@@ -36,7 +36,7 @@ begin
                         when "00" =>
                             fm_synth_note <= writedata(9 downto 0);
                         when "01" =>
-                            fm_synth_note <= writedata(3 downto 0);
+                            fm_synth_mod_depth <= writedata(3 downto 0);
                         when "10" =>
                             fm_synth_volume <= writedata(3 downto 0);
                         when "11" =>
