@@ -16,3 +16,11 @@
 *.log
 *.chg
 /output_files
+/.sopc_builder
+/sopc_builder_log.txt
+/nios_system_log.txt
+*.mif
+*.ptf
+*.html
+*.bsf
+*.ptf.*
