@@ -14,8 +14,14 @@ architecture rtl of rshift is
     signal copy_bit : std_logic;
 begin
     copy_bit <= number(15);
-    GEN_MUX : for i in 0 to 15 generate
-        rss(i) <= (i downto 0 => copy_bit) & number((15 - i) downto 0);
+    rss(0) <= number;
+    SEL_MUX0 : entity work.multiplexer port map (
+        input => rss(0),
+        sel => unsigned(shiftby),
+        output => shifted(0)
+    );
+    GEN_MUX : for i in 1 to 15 generate
+        rss(i) <= ((i-1) downto 0 => copy_bit) & number(15 downto i);
         SEL_MUX : entity work.multiplexer port map (
                         input => rss(i),
                         sel => unsigned(shiftby),

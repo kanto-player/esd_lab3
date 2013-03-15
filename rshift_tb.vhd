@@ -9,7 +9,7 @@ architecture sim of rshift_tb is
     signal number : signed(15 downto 0);
     signal shiftby : std_logic_vector(3 downto 0);
     signal shifted : signed(15 downto 0);
-    component rshift
+    component rshift is
         port (number : in signed(15 downto 0);
               shiftby : in std_logic_vector(3 downto 0);
               shifted : out signed(15 downto 0));
@@ -26,14 +26,17 @@ begin
         shiftby <= x"2";
         wait for 5 ns;
         assert shifted = x"ffff";
+        wait for 5 ns;
         number <= x"000f";
         shiftby <= x"3";
         wait for 5 ns;
-        assert shifted = x"0007";
+        assert shifted = x"0001";
+        wait for 5 ns;
         number <= x"001b";
         shiftby <= x"0";
         wait for 5 ns;
         assert shifted = x"001b";
+        wait for 5 ns;
         wait;
     end process;
 end sim;
