@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numberic_std.all;
+use ieee.numeric_std.all;
 
 -- clk              : clock in
 -- divider_count    : factor by which to divide the 50MHz clock
@@ -17,7 +17,7 @@ end frequency_divider;
 
 architecture rtl of frequency_divider is
     signal divider_old  : std_logic_vector(9 downto 0) := (others => '0');
-    signal count        : unsigned(9 downto 0) := 1;
+    signal count        : unsigned(9 downto 0) := x"1";
 begin
     process(clk)
     begin
@@ -28,11 +28,11 @@ begin
 
             -- if divider value changes, reset count
             if divider /= divider_old then
-                count <= 1;
+                count <= x"1";
 
             -- if count reached, clock high and reset
             elsif count = unsigned(divider) then
-                count <= 1;
+                count <= x"1";
                 clk_out <= '1';
 
             -- otherwise, just increment count
@@ -44,5 +44,5 @@ begin
             divider_old <= divider;
 
         end if;
-    end;
-end;
+    end process;
+end rtl;

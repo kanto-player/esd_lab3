@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numberic_std.all;
+use ieee.numeric_std.all;
 
 entity counter is
     port (clk   : in std_logic;
@@ -8,11 +8,13 @@ entity counter is
 end counter;
 
 architecture rtl of counter is
+    signal count_intern : unsigned(9 downto 0);
 begin
+    count <= count_intern;
     process(clk)
     begin
         if rising_edge(clk) then
-            count <= count + 1;
+            count_intern <= count_intern + 1;
         end if;
-    end;
+    end process;
 end;
