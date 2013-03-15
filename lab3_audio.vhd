@@ -205,7 +205,14 @@ architecture datapath of lab3_audio is
               shiftby : in std_logic_vector(3 downto 0);                        
               shifted : out signed(15 downto 0));                               
   end component;
+
+  component frequency_divider is
+    port (clk     : in std_logic;
+          divider : in std_logic_vector(9 downto 0);
+          clk_out : out std_logic);
+  end component;
   
+  signal div_clk : std_logic;
   signal audio_clock : unsigned(1 downto 0) := "00";
   signal audio_request : std_logic;
   signal shifted : signed(15 downto 0);
@@ -216,6 +223,12 @@ begin
     number => x"fffc",
     shiftby => x"1",
     shifted => shifted
+  );
+
+  FD : frequency_divider port map (
+    clk => CLOCK_50,
+    divider => "0000000010",
+    clk_out => div_clk
   );
 
   process (CLOCK_50)
