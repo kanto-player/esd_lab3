@@ -6,7 +6,8 @@
 ###################################################################
 
 PROJECT = lab3_audio
-SOURCE_FILES = lab3_audio.vhd sinrom.vhd de2_i2c_av_config.v de2_i2c_controller.v
+SOURCE_FILES = lab3_audio.vhd sinrom.vhd rshift.vhd multiplexer.vhd \
+				de2_i2c_av_config.v de2_i2c_controller.v
 ASSIGNMENT_FILES = lab3_audio.qpf lab3_audio.qsf
 
 ###################################################################
