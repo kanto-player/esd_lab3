@@ -200,10 +200,23 @@ architecture datapath of lab3_audio is
   );
   end component;
 
+  component rshift is                                                         
+        port (number : in signed(15 downto 0);                                  
+              shiftby : in std_logic_vector(3 downto 0);                        
+              shifted : out signed(15 downto 0));                               
+  end component;
+  
   signal audio_clock : unsigned(1 downto 0) := "00";
   signal audio_request : std_logic;
+  signal shifted : signed(15 downto 0);
 
 begin
+  
+  RS : rshift port map (
+    number => x"fffc",
+    shiftby => x"1",
+    shifted => shifted
+  );
 
   process (CLOCK_50)
   begin
