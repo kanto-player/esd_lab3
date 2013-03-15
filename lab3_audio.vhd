@@ -212,11 +212,24 @@ architecture datapath of lab3_audio is
           clk_out : out std_logic);
   end component;
   
+  component adder is
+    port(a : in unsigned(7 downto 0);
+         b : in signed(7 downto 0);
+         sum : out signed(9 downto 0));
+  end component;
+  
+  component wrapper is
+    port(unwrapped : in signed(9 downto 0);
+         wrapped : out unsigned(7 downto 0));
+  end component;
+  
   signal div_clk : std_logic;
   signal audio_clock : unsigned(1 downto 0) := "00";
   signal audio_request : std_logic;
   signal shifted : signed(15 downto 0);
-
+  signal sum : signed(9 downto 0);
+  signal wrapped : unsigned(7 downto 0);
+  
 begin
   
   RS : rshift port map (
@@ -229,6 +242,17 @@ begin
     clk => CLOCK_50,
     divider => "0000000010",
     clk_out => div_clk
+  );
+  
+  ADD : adder port map (
+    a => x"f0",
+    b => x"0d",
+    sum => sum
+  );
+  
+  WRAP : wrapper port map (
+    unwrapped => sum,
+    wrapped => wrapped
   );
 
   process (CLOCK_50)

@@ -8,6 +8,7 @@
 PROJECT = lab3_audio
 SOURCE_FILES = lab3_audio.vhd sinrom.vhd rshift.vhd multiplexer.vhd \
 				frequency_divider.vhd counter.vhd \
+				adder.vhd wrapper.vhd \
 				nios_system.qip de2_i2c_av_config.v de2_i2c_controller.v
 ASSIGNMENT_FILES = lab3_audio.qpf lab3_audio.qsf
 
