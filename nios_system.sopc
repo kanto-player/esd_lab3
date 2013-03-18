@@ -2,11 +2,11 @@
 <system name="nios_system">
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element de2_ps2_0.avalon_slave_0
+   element sram.avalon_slave_0
    {
       datum baseAddress
       {
-         value = "1052736";
+         value = "524288";
          type = "String";
       }
    }
@@ -18,11 +18,11 @@
          type = "String";
       }
    }
-   element sram.avalon_slave_0
+   element de2_ps2_0.avalon_slave_0
    {
       datum baseAddress
       {
-         value = "524288";
+         value = "1052736";
          type = "String";
       }
    }
@@ -96,8 +96,8 @@
  <parameter name="maxAdditionalLatency" value="0" />
  <parameter name="projectName" value="lab3_audio.qpf" />
  <parameter name="sopcBorderPoints" value="true" />
- <parameter name="systemHash" value="-14324630727" />
- <parameter name="timeStamp" value="1363632781125" />
+ <parameter name="systemHash" value="-13546768531" />
+ <parameter name="timeStamp" value="1363634686806" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <module kind="clock_source" version="12.1" enabled="1" name="clk_0">
   <parameter name="clockFrequency" value="50000000" />
@@ -211,7 +211,9 @@
  <module kind="de2_fm_synth_control" version="1.0" enabled="1" name="fm_synth">
   <parameter name="AUTO_CLOCK_CLOCK_RATE" value="50000000" />
  </module>
- <module kind="de2_ps2" version="1.0" enabled="1" name="de2_ps2_0" />
+ <module kind="de2_ps2" version="1.0" enabled="1" name="de2_ps2_0">
+  <parameter name="AUTO_CLOCK_SINK_CLOCK_RATE" value="50000000" />
+ </module>
  <connection kind="clock" version="12.1" start="clk_0.clk" end="cpu_0.clk" />
  <connection
    kind="avalon"
