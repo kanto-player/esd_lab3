@@ -626,7 +626,7 @@ begin
   module_input4 <= internal_MonDReg(31 DOWNTO 0);
   module_input5 <= ((chipselect AND write) AND debugaccess) AND NOT address(8);
 
-  cfgdout <= A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("000"))), std_logic_vector'("00000000000100000000000000100000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("001"))), std_logic_vector'("00000000000000000001010100010101"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("010"))), std_logic_vector'("00000000000001000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("011"))), std_logic_vector'("00000000000000000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("100"))), std_logic_vector'("00100000000000000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("101"))), std_logic_vector'("00000000000100000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("110"))), std_logic_vector'("00000000000000000000000000000000"), std_logic_vector'("00000000000000000000000000000000"))))))));
+  cfgdout <= A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("000"))), std_logic_vector'("00000000000010000000000000100000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("001"))), std_logic_vector'("00000000000000000001010100010101"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("010"))), std_logic_vector'("00000000000001000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("011"))), std_logic_vector'("00000000000000000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("100"))), std_logic_vector'("00100000000000000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("101"))), std_logic_vector'("00000000000010000000000000000000"), A_WE_StdLogicVector(((MonAReg(4 DOWNTO 2) = std_logic_vector'("110"))), std_logic_vector'("00000000000000000000000000000000"), std_logic_vector'("00000000000000000000000000000000"))))))));
   --vhdl renameroo for output signals
   MonDReg <= internal_MonDReg;
   --vhdl renameroo for output signals
@@ -4839,7 +4839,7 @@ begin
   E_ci_multi_stall <= std_logic'('0');
   iactive <= d_irq(31 DOWNTO 0) AND std_logic_vector'("00000000000000000000000000000000");
   F_pc_sel_nxt <= A_WE_StdLogicVector((std_logic'(R_ctrl_exception) = '1'), std_logic_vector'("00"), A_WE_StdLogicVector((std_logic'(R_ctrl_break) = '1'), std_logic_vector'("01"), A_WE_StdLogicVector((std_logic'(((W_br_taken OR R_ctrl_uncond_cti_non_br))) = '1'), std_logic_vector'("10"), std_logic_vector'("11"))));
-  F_pc_no_crst_nxt <= A_EXT (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("00"))), std_logic_vector'("00000000000001000000000000001000"), A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("01"))), std_logic_vector'("00000000000000000000001000001000"), (std_logic_vector'("0000000000000") & (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("10"))), E_arith_result(20 DOWNTO 2), F_pc_plus_one))))), 19);
+  F_pc_no_crst_nxt <= A_EXT (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("00"))), std_logic_vector'("00000000000000100000000000001000"), A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("01"))), std_logic_vector'("00000000000001000000001000001000"), (std_logic_vector'("0000000000000") & (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("10"))), E_arith_result(20 DOWNTO 2), F_pc_plus_one))))), 19);
   F_pc_nxt <= F_pc_no_crst_nxt;
   F_pcb_nxt <= F_pc_nxt & std_logic_vector'("00");
   F_pc_en <= W_valid;
@@ -4847,7 +4847,7 @@ begin
   process (clk, reset_n)
   begin
     if reset_n = '0' then
-      F_pc <= std_logic_vector'("1000000000000000000");
+      F_pc <= std_logic_vector'("0100000000000000000");
     elsif clk'event and clk = '1' then
       if std_logic'(F_pc_en) = '1' then 
         F_pc <= F_pc_nxt;

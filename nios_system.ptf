@@ -132,13 +132,13 @@ SYSTEM nios_system
          {
             Entry cpu_0/jtag_debug_module
             {
-               address = "0x00000800";
+               address = "0x00100800";
                span = "0x00000800";
                is_bridge = "0";
             }
             Entry sram/avalon_slave_0
             {
-               address = "0x00100000";
+               address = "0x00080000";
                span = "0x00080000";
                is_bridge = "0";
             }
@@ -282,14 +282,14 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/instruction_master
             {
                priority = "1";
-               Offset_Address = "0x00000800";
+               Offset_Address = "0x00100800";
             }
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00000800";
+               Offset_Address = "0x00100800";
             }
-            Base_Address = "0x00000800";
+            Base_Address = "0x00100800";
             Is_Readable = "1";
             Is_Writeable = "1";
             Uses_Tri_State_Data_Bus = "0";
@@ -490,25 +490,25 @@ SYSTEM nios_system
          {
             Entry cpu_0/jtag_debug_module
             {
-               address = "0x00000800";
+               address = "0x00100800";
                span = "0x00000800";
                is_bridge = "0";
             }
             Entry sram/avalon_slave_0
             {
-               address = "0x00100000";
+               address = "0x00080000";
                span = "0x00080000";
                is_bridge = "0";
             }
             Entry fm_synth/avalon_slave_0
             {
-               address = "0x00000000";
+               address = "0x00101000";
                span = "0x00000040";
                is_bridge = "0";
             }
             Entry de2_ps2_0/avalon_slave_0
             {
-               address = "0x00000040";
+               address = "0x00101040";
                span = "0x00000001";
                is_bridge = "0";
             }
@@ -1306,14 +1306,14 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/instruction_master
             {
                priority = "1";
-               Offset_Address = "0x00100000";
+               Offset_Address = "0x00080000";
             }
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00100000";
+               Offset_Address = "0x00080000";
             }
-            Base_Address = "0x00100000";
+            Base_Address = "0x00080000";
             Address_Group = "0";
             IRQ_MASTER cpu_0/data_master
             {
@@ -1495,9 +1495,9 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00000000";
+               Offset_Address = "0x00101000";
             }
-            Base_Address = "0x00000000";
+            Base_Address = "0x00101000";
             Address_Group = "0";
             IRQ_MASTER cpu_0/data_master
             {
@@ -1569,16 +1569,16 @@ SYSTEM nios_system
       {
          PORT_WIRING 
          {
-            PORT avs_s1_reset
+            PORT avs_s1_clk
             {
-               type = "reset";
+               type = "clk";
                width = "1";
                direction = "input";
                Is_Enabled = "1";
             }
-            PORT avs_s1_clk
+            PORT avs_s1_reset
             {
-               type = "clk";
+               type = "reset";
                width = "1";
                direction = "input";
                Is_Enabled = "1";
@@ -1638,9 +1638,9 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00000040";
+               Offset_Address = "0x00101040";
             }
-            Base_Address = "0x00000040";
+            Base_Address = "0x00101040";
             Address_Group = "0";
             IRQ_MASTER cpu_0/data_master
             {
@@ -1686,7 +1686,7 @@ SYSTEM nios_system
       }
       HDL_INFO 
       {
-         Simulation_HDL_Files = "__PROJECT_DIRECTORY__/de2_ps2/hdl/de2_ps2.vhd";
+         Simulation_HDL_Files = "__PROJECT_DIRECTORY__/de2_ps2.vhd,__PROJECT_DIRECTORY__/de2_ps2_0.vhd";
       }
       WIZARD_SCRIPT_ARGUMENTS 
       {

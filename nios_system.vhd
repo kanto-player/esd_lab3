@@ -145,7 +145,7 @@ begin
   cpu_0_jtag_debug_module_begins_xfer <= NOT d1_reasons_to_wait AND ((internal_cpu_0_data_master_qualified_request_cpu_0_jtag_debug_module OR internal_cpu_0_instruction_master_qualified_request_cpu_0_jtag_debug_module));
   --assign cpu_0_jtag_debug_module_readdata_from_sa = cpu_0_jtag_debug_module_readdata so that symbol knows where to group signals which may go to master only, which is an e_assign
   cpu_0_jtag_debug_module_readdata_from_sa <= cpu_0_jtag_debug_module_readdata;
-  internal_cpu_0_data_master_requests_cpu_0_jtag_debug_module <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 11) & std_logic_vector'("00000000000")) = std_logic_vector'("000000000100000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
+  internal_cpu_0_data_master_requests_cpu_0_jtag_debug_module <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 11) & std_logic_vector'("00000000000")) = std_logic_vector'("100000000100000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
   --cpu_0_jtag_debug_module_arb_share_counter set values, which is an e_mux
   cpu_0_jtag_debug_module_arb_share_set_values <= std_logic_vector'("001");
   --cpu_0_jtag_debug_module_non_bursting_master_requests mux, which is an e_mux
@@ -216,7 +216,7 @@ begin
   internal_cpu_0_data_master_qualified_request_cpu_0_jtag_debug_module <= internal_cpu_0_data_master_requests_cpu_0_jtag_debug_module AND NOT (((((NOT cpu_0_data_master_waitrequest) AND cpu_0_data_master_write)) OR cpu_0_instruction_master_arbiterlock));
   --cpu_0_jtag_debug_module_writedata mux, which is an e_mux
   cpu_0_jtag_debug_module_writedata <= cpu_0_data_master_writedata;
-  internal_cpu_0_instruction_master_requests_cpu_0_jtag_debug_module <= ((to_std_logic(((Std_Logic_Vector'(cpu_0_instruction_master_address_to_slave(20 DOWNTO 11) & std_logic_vector'("00000000000")) = std_logic_vector'("000000000100000000000")))) AND (cpu_0_instruction_master_read))) AND cpu_0_instruction_master_read;
+  internal_cpu_0_instruction_master_requests_cpu_0_jtag_debug_module <= ((to_std_logic(((Std_Logic_Vector'(cpu_0_instruction_master_address_to_slave(20 DOWNTO 11) & std_logic_vector'("00000000000")) = std_logic_vector'("100000000100000000000")))) AND (cpu_0_instruction_master_read))) AND cpu_0_instruction_master_read;
   --cpu_0/data_master granted cpu_0/jtag_debug_module last time, which is an e_register
   process (clk, reset_n)
   begin
@@ -495,7 +495,7 @@ begin
   --cascaded wait assignment, which is an e_assign
   cpu_0_data_master_run <= r_0;
   --optimize select-logic by passing only those address bits which matter.
-  internal_cpu_0_data_master_address_to_slave <= Std_Logic_Vector'(A_ToStdLogicVector(cpu_0_data_master_address(20)) & A_ToStdLogicVector(std_logic'('0')) & cpu_0_data_master_address(18 DOWNTO 0));
+  internal_cpu_0_data_master_address_to_slave <= cpu_0_data_master_address(20 DOWNTO 0);
   --cpu_0/data_master readdata mux, which is an e_mux
   cpu_0_data_master_readdata <= ((((A_REP(NOT cpu_0_data_master_requests_cpu_0_jtag_debug_module, 32) OR cpu_0_jtag_debug_module_readdata_from_sa)) AND ((A_REP(NOT cpu_0_data_master_requests_de2_ps2_0_avalon_slave_0, 32) OR Std_Logic_Vector'(de2_ps2_0_avalon_slave_0_readdata_from_sa(7 DOWNTO 0) & dbs_8_reg_segment_2 & dbs_8_reg_segment_1 & dbs_8_reg_segment_0)))) AND ((A_REP(NOT cpu_0_data_master_requests_fm_synth_avalon_slave_0, 32) OR Std_Logic_Vector'(fm_synth_avalon_slave_0_readdata_from_sa(15 DOWNTO 0) & dbs_16_reg_segment_0)))) AND ((A_REP(NOT cpu_0_data_master_requests_sram_avalon_slave_0, 32) OR Std_Logic_Vector'(sram_avalon_slave_0_readdata_from_sa(15 DOWNTO 0) & dbs_16_reg_segment_0)));
   --actual waitrequest port, which is an e_register
@@ -691,7 +691,7 @@ begin
   --cascaded wait assignment, which is an e_assign
   cpu_0_instruction_master_run <= r_0;
   --optimize select-logic by passing only those address bits which matter.
-  internal_cpu_0_instruction_master_address_to_slave <= Std_Logic_Vector'(A_ToStdLogicVector(cpu_0_instruction_master_address(20)) & A_ToStdLogicVector(std_logic'('0')) & cpu_0_instruction_master_address(18 DOWNTO 0));
+  internal_cpu_0_instruction_master_address_to_slave <= cpu_0_instruction_master_address(20 DOWNTO 0);
   --cpu_0/instruction_master readdata mux, which is an e_mux
   cpu_0_instruction_master_readdata <= ((A_REP(NOT cpu_0_instruction_master_requests_cpu_0_jtag_debug_module, 32) OR cpu_0_jtag_debug_module_readdata_from_sa)) AND ((A_REP(NOT cpu_0_instruction_master_requests_sram_avalon_slave_0, 32) OR Std_Logic_Vector'(sram_avalon_slave_0_readdata_from_sa(15 DOWNTO 0) & dbs_16_reg_segment_0)));
   --actual waitrequest port, which is an e_assign
@@ -906,7 +906,7 @@ begin
   de2_ps2_0_avalon_slave_0_begins_xfer <= NOT d1_reasons_to_wait AND (internal_cpu_0_data_master_qualified_request_de2_ps2_0_avalon_slave_0);
   --assign de2_ps2_0_avalon_slave_0_readdata_from_sa = de2_ps2_0_avalon_slave_0_readdata so that symbol knows where to group signals which may go to master only, which is an e_assign
   de2_ps2_0_avalon_slave_0_readdata_from_sa <= de2_ps2_0_avalon_slave_0_readdata;
-  internal_cpu_0_data_master_requests_de2_ps2_0_avalon_slave_0 <= ((to_std_logic(((cpu_0_data_master_address_to_slave(20 DOWNTO 0) = std_logic_vector'("000000000000001000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write)))) AND cpu_0_data_master_read;
+  internal_cpu_0_data_master_requests_de2_ps2_0_avalon_slave_0 <= ((to_std_logic(((cpu_0_data_master_address_to_slave(20 DOWNTO 0) = std_logic_vector'("100000001000001000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write)))) AND cpu_0_data_master_read;
   --de2_ps2_0_avalon_slave_0_arb_share_counter set values, which is an e_mux
   de2_ps2_0_avalon_slave_0_arb_share_set_values <= A_EXT (A_WE_StdLogicVector((std_logic'((internal_cpu_0_data_master_granted_de2_ps2_0_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000100"), std_logic_vector'("00000000000000000000000000000001")), 3);
   --de2_ps2_0_avalon_slave_0_non_bursting_master_requests mux, which is an e_mux
@@ -1147,7 +1147,7 @@ begin
   fm_synth_avalon_slave_0_begins_xfer <= NOT d1_reasons_to_wait AND (internal_cpu_0_data_master_qualified_request_fm_synth_avalon_slave_0);
   --assign fm_synth_avalon_slave_0_readdata_from_sa = fm_synth_avalon_slave_0_readdata so that symbol knows where to group signals which may go to master only, which is an e_assign
   fm_synth_avalon_slave_0_readdata_from_sa <= fm_synth_avalon_slave_0_readdata;
-  internal_cpu_0_data_master_requests_fm_synth_avalon_slave_0 <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 6) & std_logic_vector'("000000")) = std_logic_vector'("000000000000000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
+  internal_cpu_0_data_master_requests_fm_synth_avalon_slave_0 <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 6) & std_logic_vector'("000000")) = std_logic_vector'("100000001000000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
   --fm_synth_avalon_slave_0_arb_share_counter set values, which is an e_mux
   fm_synth_avalon_slave_0_arb_share_set_values <= A_EXT (A_WE_StdLogicVector((std_logic'((internal_cpu_0_data_master_granted_fm_synth_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000010"), std_logic_vector'("00000000000000000000000000000001")), 3);
   --fm_synth_avalon_slave_0_non_bursting_master_requests mux, which is an e_mux
@@ -1425,7 +1425,7 @@ begin
   sram_avalon_slave_0_begins_xfer <= NOT d1_reasons_to_wait AND ((internal_cpu_0_data_master_qualified_request_sram_avalon_slave_0 OR internal_cpu_0_instruction_master_qualified_request_sram_avalon_slave_0));
   --assign sram_avalon_slave_0_readdata_from_sa = sram_avalon_slave_0_readdata so that symbol knows where to group signals which may go to master only, which is an e_assign
   sram_avalon_slave_0_readdata_from_sa <= sram_avalon_slave_0_readdata;
-  internal_cpu_0_data_master_requests_sram_avalon_slave_0 <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 19) & std_logic_vector'("0000000000000000000")) = std_logic_vector'("100000000000000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
+  internal_cpu_0_data_master_requests_sram_avalon_slave_0 <= to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 19) & std_logic_vector'("0000000000000000000")) = std_logic_vector'("010000000000000000000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write));
   --sram_avalon_slave_0_arb_share_counter set values, which is an e_mux
   sram_avalon_slave_0_arb_share_set_values <= A_EXT (A_WE_StdLogicVector((std_logic'((internal_cpu_0_data_master_granted_sram_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000010"), A_WE_StdLogicVector((std_logic'((internal_cpu_0_instruction_master_granted_sram_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000010"), A_WE_StdLogicVector((std_logic'((internal_cpu_0_data_master_granted_sram_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000010"), A_WE_StdLogicVector((std_logic'((internal_cpu_0_instruction_master_granted_sram_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000010"), std_logic_vector'("00000000000000000000000000000001"))))), 3);
   --sram_avalon_slave_0_non_bursting_master_requests mux, which is an e_mux
@@ -1496,7 +1496,7 @@ begin
   internal_cpu_0_data_master_qualified_request_sram_avalon_slave_0 <= internal_cpu_0_data_master_requests_sram_avalon_slave_0 AND NOT (((((((NOT cpu_0_data_master_waitrequest OR cpu_0_data_master_no_byte_enables_and_last_term) OR NOT(or_reduce(internal_cpu_0_data_master_byteenable_sram_avalon_slave_0)))) AND cpu_0_data_master_write)) OR cpu_0_instruction_master_arbiterlock));
   --sram_avalon_slave_0_writedata mux, which is an e_mux
   sram_avalon_slave_0_writedata <= cpu_0_data_master_dbs_write_16;
-  internal_cpu_0_instruction_master_requests_sram_avalon_slave_0 <= ((to_std_logic(((Std_Logic_Vector'(cpu_0_instruction_master_address_to_slave(20 DOWNTO 19) & std_logic_vector'("0000000000000000000")) = std_logic_vector'("100000000000000000000")))) AND (cpu_0_instruction_master_read))) AND cpu_0_instruction_master_read;
+  internal_cpu_0_instruction_master_requests_sram_avalon_slave_0 <= ((to_std_logic(((Std_Logic_Vector'(cpu_0_instruction_master_address_to_slave(20 DOWNTO 19) & std_logic_vector'("0000000000000000000")) = std_logic_vector'("010000000000000000000")))) AND (cpu_0_instruction_master_read))) AND cpu_0_instruction_master_read;
   --cpu_0/data_master granted sram/avalon_slave_0 last time, which is an e_register
   process (clk, reset_n)
   begin
