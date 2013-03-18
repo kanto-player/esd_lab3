@@ -23,3 +23,8 @@
 *.html
 *.bsf
 *.ptf.*
+/.metadata
+*.elf
+*.map
+*.objdump
+obj
