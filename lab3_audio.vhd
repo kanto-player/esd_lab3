@@ -229,8 +229,26 @@ architecture datapath of lab3_audio is
   signal shifted : signed(15 downto 0);
   signal sum : signed(9 downto 0);
   signal wrapped : unsigned(7 downto 0);
+  signal reset_n : std_logic := '1';
   
 begin
+  
+  NIOS : entity work.nios_system port map (
+    clk_0 => CLOCK_50,
+    reset_n => reset_n,
+	 
+    PS2_CLK_to_the_de2_ps2_0 => PS2_CLK,
+    PS2_DATA_to_the_de2_ps2_0 => PS2_DAT,
+
+    SRAM_ADDR_from_the_sram      => SRAM_ADDR,
+    SRAM_CE_N_from_the_sram      => SRAM_CE_N,
+    SRAM_DQ_to_and_from_the_sram => SRAM_DQ,
+    SRAM_LB_N_from_the_sram      => SRAM_LB_N,
+    SRAM_OE_N_from_the_sram      => SRAM_OE_N,
+    SRAM_UB_N_from_the_sram      => SRAM_UB_N,
+    SRAM_WE_N_from_the_sram      => SRAM_WE_N
+
+  );
   
   RS : rshift port map (
     number => x"fffc",
@@ -273,7 +291,7 @@ begin
 
   V1: de2_wm8731_audio port map (
     clk => audio_clock(1),
-    reset_n => '1',
+    reset_n => reset_n,
     test_mode => '1',                   -- Output a sine wave
     audio_request => audio_request,
     data => "0000000000000000",
@@ -314,14 +332,6 @@ begin
   SD_DAT3 <= '1';  
   SD_CMD <= '1';
   SD_CLK <= '1';
-
-  SRAM_DQ <= (others => 'Z');
-  SRAM_ADDR <= (others => '0');
-  SRAM_UB_N <= '1';
-  SRAM_LB_N <= '1';
-  SRAM_CE_N <= '1';
-  SRAM_WE_N <= '1';
-  SRAM_OE_N <= '1';
 
   UART_TXD <= '0';
   DRAM_ADDR <= (others => '0');
