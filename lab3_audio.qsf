@@ -516,3 +516,4 @@ set_global_assignment -name SDC_FILE ../../../altera/12.1/ip/altera/sopc_builder
 set_global_assignment -name IP_TOOL_NAME sopc -entity nios_system -qip nios_system.qip
 set_global_assignment -name IP_TOOL_VERSION 12.1 -entity nios_system -qip nios_system.qip
 set_global_assignment -name IP_TOOL_ENV sopc -entity nios_system -qip nios_system.qip
+set_global_assignment -name SDC_FILE /opt/altera/altera12.1/ip/altera/sopc_builder_ip/altera_avalon_clock_adapter/altera_avalon_clock_adapter.sdc -qip nios_system.qip

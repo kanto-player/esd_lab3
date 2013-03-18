@@ -10,6 +10,14 @@
          type = "String";
       }
    }
+   element de2_ps2_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "64";
+         type = "String";
+      }
+   }
    element clk_0
    {
       datum _sortIndex
@@ -29,6 +37,14 @@
       {
          value = "{}";
          type = "String";
+      }
+   }
+   element de2_ps2_0
+   {
+      datum _sortIndex
+      {
+         value = "4";
+         type = "int";
       }
    }
    element fm_synth
@@ -72,8 +88,8 @@
  <parameter name="maxAdditionalLatency" value="0" />
  <parameter name="projectName" value="lab3_audio.qpf" />
  <parameter name="sopcBorderPoints" value="true" />
- <parameter name="systemHash" value="-16048516017" />
- <parameter name="timeStamp" value="1363301259560" />
+ <parameter name="systemHash" value="-20200939619" />
+ <parameter name="timeStamp" value="1363631628788" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <module kind="clock_source" version="12.1" enabled="1" name="clk_0">
   <parameter name="clockFrequency" value="50000000" />
@@ -174,7 +190,7 @@
   <parameter name="dcache_numTCDM" value="_0" />
   <parameter name="dcache_lineSize" value="_32" />
   <parameter name="dcache_bursts" value="false" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='fm_synth.avalon_slave_0' start='0x0' end='0x40' /><slave name='cpu_0.jtag_debug_module' start='0x800' end='0x1000' /><slave name='sram.avalon_slave_0' start='0x100000' end='0x180000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='fm_synth.avalon_slave_0' start='0x0' end='0x40' /><slave name='de2_ps2_0.avalon_slave_0' start='0x40' end='0x41' /><slave name='cpu_0.jtag_debug_module' start='0x800' end='0x1000' /><slave name='sram.avalon_slave_0' start='0x100000' end='0x180000' /></address-map>]]></parameter>
   <parameter name="dataAddrWidth" value="21" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="cpuReset" value="false" />
@@ -187,6 +203,7 @@
  <module kind="de2_fm_synth_control" version="1.0" enabled="1" name="fm_synth">
   <parameter name="AUTO_CLOCK_CLOCK_RATE" value="50000000" />
  </module>
+ <module kind="de2_ps2" version="1.0" enabled="1" name="de2_ps2_0" />
  <connection kind="clock" version="12.1" start="clk_0.clk" end="cpu_0.clk" />
  <connection
    kind="avalon"
@@ -220,7 +237,6 @@
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00100000" />
  </connection>
- <connection kind="clock" version="12.1" start="clk_0.clk" end="fm_synth.clock" />
  <connection
    kind="avalon"
    version="12.1"
@@ -229,4 +245,18 @@
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
  </connection>
+ <connection
+   kind="avalon"
+   version="12.1"
+   start="cpu_0.data_master"
+   end="de2_ps2_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0040" />
+ </connection>
+ <connection
+   kind="clock"
+   version="12.1"
+   start="clk_0.clk"
+   end="de2_ps2_0.clock_sink" />
+ <connection kind="clock" version="12.1" start="clk_0.clk" end="fm_synth.clock" />
 </system>

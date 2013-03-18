@@ -12,6 +12,8 @@
       fm_synth_mod_depth_from_the_fm_synth => fm_synth_mod_depth_from_the_fm_synth,
       fm_synth_note_from_the_fm_synth => fm_synth_note_from_the_fm_synth,
       fm_synth_volume_from_the_fm_synth => fm_synth_volume_from_the_fm_synth,
+      PS2_Clk_to_the_de2_ps2_0 => PS2_Clk_to_the_de2_ps2_0,
+      PS2_Data_to_the_de2_ps2_0 => PS2_Data_to_the_de2_ps2_0,
       clk_0 => clk_0,
       reset_n => reset_n
     );
