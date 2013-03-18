@@ -1,4 +1,4 @@
-----------------------------------------------------------------------
+
 --
 -- Simple (receive-only) PS/2 controller for the Altera Avalon bus
 --
@@ -177,7 +177,7 @@ entity de2_ps2 is
     avs_s1_address    : in unsigned(0 downto 0);
     avs_s1_read       : in std_logic;
     avs_s1_chipselect : in std_logic;
-    avs_s1_readdata   : out unsigned(7 downto 0);
+    avs_s1_readdata   : out std_logic_vector(7 downto 0);
     
     PS2_Clk           : in std_logic;
     PS2_Data          : in std_logic
@@ -212,7 +212,7 @@ begin
   begin
     if avs_s1_chipselect = '1' then 
       if avs_s1_address(0) = '1' then 
-        avs_s1_readdata <= Data;
+        avs_s1_readdata <= std_logic_vector(Data);
       else
         avs_s1_readdata <= "0000000" & DataAvailable;
       end if;	
