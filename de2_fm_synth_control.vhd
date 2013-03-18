@@ -26,7 +26,7 @@ begin
     begin
         if rising_edge(clk) then
             if reset_n = '0' then
-                fm_synth_note <= x"300";
+                fm_synth_note <= "1100000000";
                 fm_synth_mod_depth <= x"F";
                 fm_synth_volume <= x"F";
                 fm_synth_en <= '0';
