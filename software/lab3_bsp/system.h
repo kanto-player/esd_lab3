@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu_0' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../nios_system.sopcinfo
  *
- * Generated: Wed Mar 20 11:14:39 EDT 2013
+ * Generated: Wed Mar 20 11:39:01 EDT 2013
  */
 
 /*
@@ -218,7 +218,7 @@
 #define PS2_IRQ -1
 #define PS2_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define PS2_NAME "/dev/ps2"
-#define PS2_SPAN 1
+#define PS2_SPAN 2
 #define PS2_TYPE "de2_ps2"
 
 

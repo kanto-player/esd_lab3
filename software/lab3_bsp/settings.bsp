@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Mar 20, 2013 11:14:38 AM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1363792478780</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Mar 20, 2013 11:39:00 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1363793940792</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/user2/spring13/zm2169/EmbeddedSystems/esd_lab3/software/lab3_bsp</BspGeneratedLocation>
         <BspSettingsFile>./settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../nios_system.sopcinfo</SopcDesignFile>
@@ -870,8 +870,8 @@
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>ps2</slaveDescriptor>
-                <addressRange>0x00101048 - 0x00101048</addressRange>
-                <addressSpan>1</addressSpan>
+                <addressRange>0x00101048 - 0x00101049</addressRange>
+                <addressSpan>2</addressSpan>
                 <attributes/>
         </MemoryMap>
         <LinkerSection>

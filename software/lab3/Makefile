@@ -142,7 +142,8 @@ ACDS_VERSION := 12.1
 ELF := lab3.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
+C_SRCS += hello_world.c
+C_SRCS += ps2.c
 CXX_SRCS :=
 ASM_SRCS :=
 
