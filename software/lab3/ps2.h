@@ -19,6 +19,10 @@ typedef uint16_t ps2_code_t;
 #define is_extended(code) ((code) & EXTENDED)
 #define is_key_up_extended(code) (is_key_up(code) && is_extended(code))
 
+/* Reads a single codeword from the keyboard
+ * Returns a 2-byte integer
+ * Least-significant byte contains one-byte code
+ * Most-Significant byte has KEY_UP or EXTENDED bits set in it */
 ps2_code_t ps2_get_code(void);
 
 #endif /* PS2_H_ */
