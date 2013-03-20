@@ -174,7 +174,7 @@ entity de2_ps2 is
   port (
     avs_s1_clk        : in std_logic;
     avs_s1_reset      : in std_logic;
-    avs_s1_address    : in unsigned(0 downto 0);
+    avs_s1_address    : in std_logic_vector(0 downto 0);
     avs_s1_read       : in std_logic;
     avs_s1_chipselect : in std_logic;
     avs_s1_readdata   : out std_logic_vector(7 downto 0);

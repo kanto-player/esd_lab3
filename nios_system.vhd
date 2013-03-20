@@ -1378,6 +1378,7 @@ entity ps2_avalon_slave_0_arbitrator is
               -- inputs:
                  signal clk : IN STD_LOGIC;
                  signal cpu_0_data_master_address_to_slave : IN STD_LOGIC_VECTOR (20 DOWNTO 0);
+                 signal cpu_0_data_master_dbs_address : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
                  signal cpu_0_data_master_read : IN STD_LOGIC;
                  signal cpu_0_data_master_write : IN STD_LOGIC;
                  signal ps2_avalon_slave_0_readdata : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -1389,6 +1390,7 @@ entity ps2_avalon_slave_0_arbitrator is
                  signal cpu_0_data_master_read_data_valid_ps2_avalon_slave_0 : OUT STD_LOGIC;
                  signal cpu_0_data_master_requests_ps2_avalon_slave_0 : OUT STD_LOGIC;
                  signal d1_ps2_avalon_slave_0_end_xfer : OUT STD_LOGIC;
+                 signal ps2_avalon_slave_0_address : OUT STD_LOGIC;
                  signal ps2_avalon_slave_0_chipselect : OUT STD_LOGIC;
                  signal ps2_avalon_slave_0_read : OUT STD_LOGIC;
                  signal ps2_avalon_slave_0_readdata_from_sa : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -1450,7 +1452,7 @@ begin
   ps2_avalon_slave_0_begins_xfer <= NOT d1_reasons_to_wait AND (internal_cpu_0_data_master_qualified_request_ps2_avalon_slave_0);
   --assign ps2_avalon_slave_0_readdata_from_sa = ps2_avalon_slave_0_readdata so that symbol knows where to group signals which may go to master only, which is an e_assign
   ps2_avalon_slave_0_readdata_from_sa <= ps2_avalon_slave_0_readdata;
-  internal_cpu_0_data_master_requests_ps2_avalon_slave_0 <= ((to_std_logic(((cpu_0_data_master_address_to_slave(20 DOWNTO 0) = std_logic_vector'("100000001000001001000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write)))) AND cpu_0_data_master_read;
+  internal_cpu_0_data_master_requests_ps2_avalon_slave_0 <= ((to_std_logic(((Std_Logic_Vector'(cpu_0_data_master_address_to_slave(20 DOWNTO 1) & A_ToStdLogicVector(std_logic'('0'))) = std_logic_vector'("100000001000001001000")))) AND ((cpu_0_data_master_read OR cpu_0_data_master_write)))) AND cpu_0_data_master_read;
   --ps2_avalon_slave_0_arb_share_counter set values, which is an e_mux
   ps2_avalon_slave_0_arb_share_set_values <= A_EXT (A_WE_StdLogicVector((std_logic'((internal_cpu_0_data_master_granted_ps2_avalon_slave_0)) = '1'), std_logic_vector'("00000000000000000000000000000100"), std_logic_vector'("00000000000000000000000000000001")), 3);
   --ps2_avalon_slave_0_non_bursting_master_requests mux, which is an e_mux
@@ -1538,6 +1540,8 @@ begin
   ps2_avalon_slave_0_beginbursttransfer_internal <= ps2_avalon_slave_0_begins_xfer;
   --ps2_avalon_slave_0_read assignment, which is an e_mux
   ps2_avalon_slave_0_read <= internal_cpu_0_data_master_granted_ps2_avalon_slave_0 AND cpu_0_data_master_read;
+  --ps2_avalon_slave_0_address mux, which is an e_mux
+  ps2_avalon_slave_0_address <= Vector_To_Std_Logic(Std_Logic_Vector'(A_SRL(cpu_0_data_master_address_to_slave,std_logic_vector'("00000000000000000000000000000010")) & cpu_0_data_master_dbs_address(1 DOWNTO 0)));
   --d1_ps2_avalon_slave_0_end_xfer register, which is an e_register
   process (clk, reset_n)
   begin
@@ -2348,6 +2352,7 @@ component ps2_avalon_slave_0_arbitrator is
                  -- inputs:
                     signal clk : IN STD_LOGIC;
                     signal cpu_0_data_master_address_to_slave : IN STD_LOGIC_VECTOR (20 DOWNTO 0);
+                    signal cpu_0_data_master_dbs_address : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
                     signal cpu_0_data_master_read : IN STD_LOGIC;
                     signal cpu_0_data_master_write : IN STD_LOGIC;
                     signal ps2_avalon_slave_0_readdata : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -2359,6 +2364,7 @@ component ps2_avalon_slave_0_arbitrator is
                     signal cpu_0_data_master_read_data_valid_ps2_avalon_slave_0 : OUT STD_LOGIC;
                     signal cpu_0_data_master_requests_ps2_avalon_slave_0 : OUT STD_LOGIC;
                     signal d1_ps2_avalon_slave_0_end_xfer : OUT STD_LOGIC;
+                    signal ps2_avalon_slave_0_address : OUT STD_LOGIC;
                     signal ps2_avalon_slave_0_chipselect : OUT STD_LOGIC;
                     signal ps2_avalon_slave_0_read : OUT STD_LOGIC;
                     signal ps2_avalon_slave_0_readdata_from_sa : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -2371,6 +2377,7 @@ component ps2 is
                  -- inputs:
                     signal PS2_Clk : IN STD_LOGIC;
                     signal PS2_Data : IN STD_LOGIC;
+                    signal avs_s1_address : IN STD_LOGIC_VECTOR (0 DOWNTO 0);
                     signal avs_s1_chipselect : IN STD_LOGIC;
                     signal avs_s1_clk : IN STD_LOGIC;
                     signal avs_s1_read : IN STD_LOGIC;
@@ -2556,6 +2563,7 @@ end component nios_system_reset_clk_0_domain_synch_module;
                 signal jtag_avalon_jtag_slave_write_n :  STD_LOGIC;
                 signal jtag_avalon_jtag_slave_writedata :  STD_LOGIC_VECTOR (31 DOWNTO 0);
                 signal module_input :  STD_LOGIC;
+                signal ps2_avalon_slave_0_address :  STD_LOGIC;
                 signal ps2_avalon_slave_0_chipselect :  STD_LOGIC;
                 signal ps2_avalon_slave_0_read :  STD_LOGIC;
                 signal ps2_avalon_slave_0_readdata :  STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -2828,12 +2836,14 @@ begin
       cpu_0_data_master_read_data_valid_ps2_avalon_slave_0 => cpu_0_data_master_read_data_valid_ps2_avalon_slave_0,
       cpu_0_data_master_requests_ps2_avalon_slave_0 => cpu_0_data_master_requests_ps2_avalon_slave_0,
       d1_ps2_avalon_slave_0_end_xfer => d1_ps2_avalon_slave_0_end_xfer,
+      ps2_avalon_slave_0_address => ps2_avalon_slave_0_address,
       ps2_avalon_slave_0_chipselect => ps2_avalon_slave_0_chipselect,
       ps2_avalon_slave_0_read => ps2_avalon_slave_0_read,
       ps2_avalon_slave_0_readdata_from_sa => ps2_avalon_slave_0_readdata_from_sa,
       ps2_avalon_slave_0_reset => ps2_avalon_slave_0_reset,
       clk => clk_0,
       cpu_0_data_master_address_to_slave => cpu_0_data_master_address_to_slave,
+      cpu_0_data_master_dbs_address => cpu_0_data_master_dbs_address,
       cpu_0_data_master_read => cpu_0_data_master_read,
       cpu_0_data_master_write => cpu_0_data_master_write,
       ps2_avalon_slave_0_readdata => ps2_avalon_slave_0_readdata,
@@ -2847,6 +2857,7 @@ begin
       avs_s1_readdata => ps2_avalon_slave_0_readdata,
       PS2_Clk => PS2_Clk_to_the_ps2,
       PS2_Data => PS2_Data_to_the_ps2,
+      avs_s1_address(0) => ps2_avalon_slave_0_address,
       avs_s1_chipselect => ps2_avalon_slave_0_chipselect,
       avs_s1_clk => clk_0,
       avs_s1_read => ps2_avalon_slave_0_read,
