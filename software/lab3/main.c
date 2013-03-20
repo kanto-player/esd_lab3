@@ -15,10 +15,24 @@
  */
 
 #include <stdio.h>
+#include "ps2.h"
 
 int main()
 {
-  printf("Hello from Nios II!\n");
+	ps2_code_t code;
 
-  return 0;
+	printf("Start typing.\n");
+	for (;;) {
+		code = ps2_get_code();
+		if (is_key_up_extended(code))
+			printf("Key Up Extended Code %x\n", 0xe000 | (code & 0x00ff));
+		else if (is_key_up(code))
+			printf("Key Up %x\n", (code & 0x00ff));
+		else if (is_extended(code))
+			printf("Extended Code %x\n", 0xe000 | (code & 0x00ff));
+		else
+			printf("Normal Code %x\n", (code & 0x00ff));
+	}
+
+	return 0;
 }
