@@ -237,8 +237,8 @@ begin
     clk_0 => CLOCK_50,
     reset_n => reset_n,
 	 
-    PS2_CLK_to_the_de2_ps2_0 => PS2_CLK,
-    PS2_DATA_to_the_de2_ps2_0 => PS2_DAT,
+    PS2_CLK_to_the_ps2 => PS2_CLK,
+    PS2_DATA_to_the_ps2 => PS2_DAT,
 
     SRAM_ADDR_from_the_sram      => SRAM_ADDR,
     SRAM_CE_N_from_the_sram      => SRAM_CE_N,
