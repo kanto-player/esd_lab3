@@ -712,10 +712,10 @@ begin
   process (clk, reset_n)
   begin
     if reset_n = '0' then
-      internal_oci_ienable1 <= std_logic_vector'("00000000000000000000000000000000");
+      internal_oci_ienable1 <= std_logic_vector'("00000000000000000000000000000001");
     elsif clk'event and clk = '1' then
       if std_logic'(take_action_oci_intr_mask_reg) = '1' then 
-        internal_oci_ienable1 <= writedata OR NOT (std_logic_vector'("00000000000000000000000000000000"));
+        internal_oci_ienable1 <= writedata OR NOT (std_logic_vector'("00000000000000000000000000000001"));
       end if;
     end if;
 
@@ -4837,7 +4837,7 @@ begin
   R_en <= std_logic'('1');
   E_ci_result <= std_logic_vector'("00000000000000000000000000000000");
   E_ci_multi_stall <= std_logic'('0');
-  iactive <= d_irq(31 DOWNTO 0) AND std_logic_vector'("00000000000000000000000000000000");
+  iactive <= d_irq(31 DOWNTO 0) AND std_logic_vector'("00000000000000000000000000000001");
   F_pc_sel_nxt <= A_WE_StdLogicVector((std_logic'(R_ctrl_exception) = '1'), std_logic_vector'("00"), A_WE_StdLogicVector((std_logic'(R_ctrl_break) = '1'), std_logic_vector'("01"), A_WE_StdLogicVector((std_logic'(((W_br_taken OR R_ctrl_uncond_cti_non_br))) = '1'), std_logic_vector'("10"), std_logic_vector'("11"))));
   F_pc_no_crst_nxt <= A_EXT (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("00"))), std_logic_vector'("00000000000000100000000000001000"), A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("01"))), std_logic_vector'("00000000000001000000001000001000"), (std_logic_vector'("0000000000000") & (A_WE_StdLogicVector(((F_pc_sel_nxt = std_logic_vector'("10"))), E_arith_result(20 DOWNTO 2), F_pc_plus_one))))), 19);
   F_pc_nxt <= F_pc_no_crst_nxt;
@@ -5350,8 +5350,8 @@ begin
   W_estatus_reg_nxt <= A_WE_StdLogic((std_logic'(E_valid) = '1'), W_estatus_reg_inst_nxt, W_estatus_reg);
   W_bstatus_reg_inst_nxt <= A_WE_StdLogic((std_logic'((R_ctrl_break)) = '1'), W_status_reg, A_WE_StdLogic((std_logic'((E_wrctl_bstatus)) = '1'), E_src1(0), W_bstatus_reg));
   W_bstatus_reg_nxt <= A_WE_StdLogic((std_logic'(E_valid) = '1'), W_bstatus_reg_inst_nxt, W_bstatus_reg);
-  W_ienable_reg_nxt <= (A_WE_StdLogicVector((std_logic'(((E_wrctl_ienable AND E_valid))) = '1'), E_src1(31 DOWNTO 0), W_ienable_reg)) AND std_logic_vector'("00000000000000000000000000000000");
-  W_ipending_reg_nxt <= ((iactive AND W_ienable_reg) AND oci_ienable) AND std_logic_vector'("00000000000000000000000000000000");
+  W_ienable_reg_nxt <= (A_WE_StdLogicVector((std_logic'(((E_wrctl_ienable AND E_valid))) = '1'), E_src1(31 DOWNTO 0), W_ienable_reg)) AND std_logic_vector'("00000000000000000000000000000001");
+  W_ipending_reg_nxt <= ((iactive AND W_ienable_reg) AND oci_ienable) AND std_logic_vector'("00000000000000000000000000000001");
   process (clk, reset_n)
   begin
     if reset_n = '0' then

@@ -1,4 +1,4 @@
--- de2_ps2_0.vhd
+-- ps2.vhd
 
 -- This file was auto-generated as part of a generation operation.
 -- If you edit it your changes will probably be lost.
@@ -7,7 +7,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity de2_ps2_0 is
+entity ps2 is
 	port (
 		avs_s1_chipselect : in  std_logic                    := '0'; --   avalon_slave_0.chipselect
 		avs_s1_readdata   : out std_logic_vector(7 downto 0);        --                 .readdata
@@ -17,9 +17,9 @@ entity de2_ps2_0 is
 		PS2_Clk           : in  std_logic                    := '0'; --      conduit_end.export
 		PS2_Data          : in  std_logic                    := '0'  --                 .export
 	);
-end entity de2_ps2_0;
+end entity ps2;
 
-architecture rtl of de2_ps2_0 is
+architecture rtl of ps2 is
 	component de2_ps2 is
 		port (
 			avs_s1_chipselect : in  std_logic                    := 'X'; -- chipselect
@@ -34,7 +34,7 @@ architecture rtl of de2_ps2_0 is
 
 begin
 
-	de2_ps2_0 : component de2_ps2
+	ps2 : component de2_ps2
 		port map (
 			avs_s1_chipselect => avs_s1_chipselect, --   avalon_slave_0.chipselect
 			avs_s1_readdata   => avs_s1_readdata,   --                 .readdata
@@ -45,4 +45,4 @@ begin
 			PS2_Data          => PS2_Data           --                 .export
 		);
 
-end architecture rtl; -- of de2_ps2_0
+end architecture rtl; -- of ps2

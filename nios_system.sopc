@@ -2,11 +2,19 @@
 <system name="nios_system">
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element sram.avalon_slave_0
+   element jtag.avalon_jtag_slave
    {
       datum baseAddress
       {
-         value = "524288";
+         value = "1052736";
+         type = "String";
+      }
+   }
+   element ps2.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "1052744";
          type = "String";
       }
    }
@@ -18,11 +26,11 @@
          type = "String";
       }
    }
-   element de2_ps2_0.avalon_slave_0
+   element sram.avalon_slave_0
    {
       datum baseAddress
       {
-         value = "1052736";
+         value = "524288";
          type = "String";
       }
    }
@@ -47,19 +55,19 @@
          type = "String";
       }
    }
-   element de2_ps2_0
-   {
-      datum _sortIndex
-      {
-         value = "4";
-         type = "int";
-      }
-   }
    element fm_synth
    {
       datum _sortIndex
       {
          value = "3";
+         type = "int";
+      }
+   }
+   element jtag
+   {
+      datum _sortIndex
+      {
+         value = "5";
          type = "int";
       }
    }
@@ -73,6 +81,14 @@
    }
    element nios_system
    {
+   }
+   element ps2
+   {
+      datum _sortIndex
+      {
+         value = "4";
+         type = "int";
+      }
    }
    element sram
    {
@@ -96,8 +112,8 @@
  <parameter name="maxAdditionalLatency" value="0" />
  <parameter name="projectName" value="lab3_audio.qpf" />
  <parameter name="sopcBorderPoints" value="true" />
- <parameter name="systemHash" value="-13546768531" />
- <parameter name="timeStamp" value="1363634686806" />
+ <parameter name="systemHash" value="-23592266025" />
+ <parameter name="timeStamp" value="1363791390833" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <module kind="clock_source" version="12.1" enabled="1" name="clk_0">
   <parameter name="clockFrequency" value="50000000" />
@@ -173,7 +189,7 @@
   <parameter name="mmu_TLBMissExcSlave" value="" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="manuallyAssignCpuID" value="false" />
-  <parameter name="internalIrqMaskSystemInfo" value="0" />
+  <parameter name="internalIrqMaskSystemInfo" value="1" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sram.avalon_slave_0' start='0x80000' end='0x100000' /><slave name='cpu_0.jtag_debug_module' start='0x100800' end='0x101000' /></address-map>]]></parameter>
   <parameter name="instAddrWidth" value="21" />
   <parameter name="impl" value="Tiny" />
@@ -198,7 +214,7 @@
   <parameter name="dcache_numTCDM" value="_0" />
   <parameter name="dcache_lineSize" value="_32" />
   <parameter name="dcache_bursts" value="false" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sram.avalon_slave_0' start='0x80000' end='0x100000' /><slave name='cpu_0.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='fm_synth.avalon_slave_0' start='0x101000' end='0x101040' /><slave name='de2_ps2_0.avalon_slave_0' start='0x101040' end='0x101041' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sram.avalon_slave_0' start='0x80000' end='0x100000' /><slave name='cpu_0.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='fm_synth.avalon_slave_0' start='0x101000' end='0x101040' /><slave name='jtag.avalon_jtag_slave' start='0x101040' end='0x101048' /><slave name='ps2.avalon_slave_0' start='0x101048' end='0x101049' /></address-map>]]></parameter>
   <parameter name="dataAddrWidth" value="21" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="cpuReset" value="false" />
@@ -211,8 +227,22 @@
  <module kind="de2_fm_synth_control" version="1.0" enabled="1" name="fm_synth">
   <parameter name="AUTO_CLOCK_CLOCK_RATE" value="50000000" />
  </module>
- <module kind="de2_ps2" version="1.0" enabled="1" name="de2_ps2_0">
+ <module kind="de2_ps2" version="1.0" enabled="1" name="ps2">
   <parameter name="AUTO_CLOCK_SINK_CLOCK_RATE" value="50000000" />
+ </module>
+ <module kind="altera_avalon_jtag_uart" version="12.1" enabled="1" name="jtag">
+  <parameter name="allowMultipleConnections" value="false" />
+  <parameter name="avalonSpec" value="1.0" />
+  <parameter name="hubInstanceID" value="0" />
+  <parameter name="readBufferDepth" value="64" />
+  <parameter name="readIRQThreshold" value="8" />
+  <parameter name="simInputCharacterStream" value="" />
+  <parameter name="simInteractiveOptions">INTERACTIVE_ASCII_OUTPUT</parameter>
+  <parameter name="useRegistersForReadBuffer" value="false" />
+  <parameter name="useRegistersForWriteBuffer" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
+  <parameter name="writeBufferDepth" value="64" />
+  <parameter name="writeIRQThreshold" value="8" />
  </module>
  <connection kind="clock" version="12.1" start="clk_0.clk" end="cpu_0.clk" />
  <connection
@@ -260,13 +290,21 @@
    kind="avalon"
    version="12.1"
    start="cpu_0.data_master"
-   end="de2_ps2_0.avalon_slave_0">
+   end="ps2.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00101048" />
+ </connection>
+ <connection kind="clock" version="12.1" start="clk_0.clk" end="ps2.clock_sink" />
+ <connection kind="clock" version="12.1" start="clk_0.clk" end="jtag.clk" />
+ <connection
+   kind="avalon"
+   version="12.1"
+   start="cpu_0.data_master"
+   end="jtag.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00101040" />
  </connection>
- <connection
-   kind="clock"
-   version="12.1"
-   start="clk_0.clk"
-   end="de2_ps2_0.clock_sink" />
+ <connection kind="interrupt" version="12.1" start="cpu_0.d_irq" end="jtag.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
 </system>
