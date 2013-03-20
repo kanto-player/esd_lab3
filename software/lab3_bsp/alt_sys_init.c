@@ -1,10 +1,10 @@
 /*
- * linker.h - Linker script mapping information
+ * alt_sys_init.c - HAL initialization source
  *
  * Machine generated for CPU 'cpu_0' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../nios_system.sopcinfo
  *
- * Generated: Mon Mar 18 15:32:48 EDT 2013
+ * Generated: Wed Mar 20 11:14:39 EDT 2013
  */
 
 /*
@@ -48,54 +48,46 @@
  * of California and by the laws of the United States of America.
  */
 
-#ifndef __LINKER_H_
-#define __LINKER_H_
+#include "system.h"
+#include "sys/alt_irq.h"
+#include "sys/alt_sys_init.h"
 
-
-/*
- * BSP controls alt_load() behavior in crt0.
- *
- */
-
-#define ALT_LOAD_EXPLICITLY_CONTROLLED
-
+#include <stddef.h>
 
 /*
- * Base address and span (size in bytes) of each linker region
- *
+ * Device headers
  */
 
-#define RESET_REGION_BASE 0x80000
-#define RESET_REGION_SPAN 32
-#define SRAM_REGION_BASE 0x80020
-#define SRAM_REGION_SPAN 524256
-
+#include "altera_nios2_irq.h"
+#include "altera_avalon_jtag_uart.h"
 
 /*
- * Devices associated with code sections
- *
+ * Allocate the device storage
  */
 
-#define ALT_EXCEPTIONS_DEVICE SRAM
-#define ALT_RESET_DEVICE SRAM
-#define ALT_RODATA_DEVICE SRAM
-#define ALT_RWDATA_DEVICE SRAM
-#define ALT_TEXT_DEVICE SRAM
-
+ALTERA_NIOS2_IRQ_INSTANCE ( CPU_0, cpu_0);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG, jtag);
 
 /*
- * Initialization code at the reset address is allowed (e.g. no external bootloader).
- *
+ * Initialize the interrupt controller devices
+ * and then enable interrupts in the CPU.
+ * Called before alt_sys_init().
+ * The "base" parameter is ignored and only
+ * present for backwards-compatibility.
  */
 
-#define ALT_ALLOW_CODE_AT_RESET
-
+void alt_irq_init ( const void* base )
+{
+    ALTERA_NIOS2_IRQ_INIT ( CPU_0, cpu_0);
+    alt_irq_cpu_enable_interrupts();
+}
 
 /*
- * The alt_load() facility is called from crt0 to copy sections into RAM.
- *
+ * Initialize the non-interrupt controller devices.
+ * Called after alt_irq_init().
  */
 
-#define ALT_LOAD_COPY_RWDATA
-
-#endif /* __LINKER_H_ */
+void alt_sys_init( void )
+{
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAG, jtag);
+}

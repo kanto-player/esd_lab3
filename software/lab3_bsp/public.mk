@@ -140,6 +140,9 @@ SOPC_NAME := nios_system
 # setting SOPC_SIMULATION_ENABLED is false
 ELF_PATCH_FLAG  += --simulation_enabled false
 
+# Small-footprint (polled mode) driver none 
+# setting altera_avalon_jtag_uart_driver.enable_small_driver is false
+
 # Build a custom version of newlib with the specified space-separated compiler 
 # flags. The custom newlib build will be placed in the &lt;bsp root>/newlib 
 # directory, and will be used only for applications that utilize this BSP. 
@@ -298,18 +301,18 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is none
-ELF_PATCH_FLAG  += --stderr_dev none
+# setting hal.stderr is jtag
+ELF_PATCH_FLAG  += --stderr_dev jtag
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is none
-ELF_PATCH_FLAG  += --stdin_dev none
+# setting hal.stdin is jtag
+ELF_PATCH_FLAG  += --stdin_dev jtag
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is none
-ELF_PATCH_FLAG  += --stdout_dev none
+# setting hal.stdout is jtag
+ELF_PATCH_FLAG  += --stdout_dev jtag
 
 
 #------------------------------------------------------------------------------

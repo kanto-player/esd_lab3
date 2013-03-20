@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Mar 18, 2013 3:32:48 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1363635168285</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>/home/user2/spring13/zm2169/EmbeddedSystems/esd_lab3/software/lab3_audio_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Mar 20, 2013 11:14:38 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1363792478780</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>/home/user2/spring13/zm2169/EmbeddedSystems/esd_lab3/software/lab3_bsp</BspGeneratedLocation>
         <BspSettingsFile>./settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -194,7 +194,7 @@
                 <SettingName>hal.stdin</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>none</Value>
+                <Value>jtag</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDIN character-mode device. This setting is used by the ALT_STDIN family of defines in system.h.</Description>
@@ -206,7 +206,7 @@
                 <SettingName>hal.stdout</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>none</Value>
+                <Value>jtag</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDOUT character-mode device. This setting is used by the ALT_STDOUT family of defines in system.h.</Description>
@@ -218,7 +218,7 @@
                 <SettingName>hal.stderr</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>none</Value>
+                <Value>jtag</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDERR character-mode device. This setting is used by the ALT_STDERR family of defines in system.h.</Description>
@@ -838,6 +838,18 @@
                 <Enabled>false</Enabled>
                 <Group>none</Group>
         </Setting>
+        <Setting>
+                <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
+                <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
+                <Type>BooleanDefineOnly</Type>
+                <Value>false</Value>
+                <DefaultValue>false</DefaultValue>
+                <DestinationFile>public_mk_define</DestinationFile>
+                <Description>Small-footprint (polled mode) driver</Description>
+                <Restrictions>none</Restrictions>
+                <Enabled>false</Enabled>
+                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+        </Setting>
         <MemoryMap>
                 <slaveDescriptor>sram</slaveDescriptor>
                 <addressRange>0x00080000 - 0x000FFFFF</addressRange>
@@ -851,8 +863,14 @@
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>de2_ps2_0</slaveDescriptor>
-                <addressRange>0x00101040 - 0x00101040</addressRange>
+                <slaveDescriptor>jtag</slaveDescriptor>
+                <addressRange>0x00101040 - 0x00101047</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>ps2</slaveDescriptor>
+                <addressRange>0x00101048 - 0x00101048</addressRange>
                 <addressSpan>1</addressSpan>
                 <attributes/>
         </MemoryMap>

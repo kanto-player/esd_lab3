@@ -139,7 +139,7 @@ ACDS_VERSION := 12.1
 # Define path to the application ELF. 
 # It may be used by the makefile fragments so is defined before including them. 
 # 
-ELF := lab3_audio.elf
+ELF := lab3.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS := hello_world.c
@@ -177,7 +177,7 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := ../lab3_audio_bsp/
+BSP_ROOT_DIR := ../lab3_bsp/
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS :=

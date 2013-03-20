@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu_0' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../nios_system.sopcinfo
  *
- * Generated: Mon Mar 18 15:32:48 EDT 2013
+ * Generated: Wed Mar 20 11:14:39 EDT 2013
  */
 
 /*
@@ -123,6 +123,7 @@
  *
  */
 
+#define __ALTERA_AVALON_JTAG_UART
 #define __ALTERA_NIOS2
 #define __DE2_FM_SYNTH_CONTROL
 #define __DE2_PS2
@@ -135,6 +136,7 @@
  */
 
 #define ALT_DEVICE_FAMILY "CYCLONEII"
+#define ALT_ENHANCED_INTERRUPT_API_PRESENT
 #define ALT_IRQ_BASE NULL
 #define ALT_LOG_PORT "/dev/null"
 #define ALT_LOG_PORT_BASE 0x0
@@ -143,33 +145,25 @@
 #define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
-#define ALT_STDERR "/dev/null"
-#define ALT_STDERR_BASE 0x0
-#define ALT_STDERR_DEV null
-#define ALT_STDERR_TYPE ""
-#define ALT_STDIN "/dev/null"
-#define ALT_STDIN_BASE 0x0
-#define ALT_STDIN_DEV null
-#define ALT_STDIN_TYPE ""
-#define ALT_STDOUT "/dev/null"
-#define ALT_STDOUT_BASE 0x0
-#define ALT_STDOUT_DEV null
-#define ALT_STDOUT_TYPE ""
+#define ALT_STDERR "/dev/jtag"
+#define ALT_STDERR_BASE 0x101040
+#define ALT_STDERR_DEV jtag
+#define ALT_STDERR_IS_JTAG_UART
+#define ALT_STDERR_PRESENT
+#define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDIN "/dev/jtag"
+#define ALT_STDIN_BASE 0x101040
+#define ALT_STDIN_DEV jtag
+#define ALT_STDIN_IS_JTAG_UART
+#define ALT_STDIN_PRESENT
+#define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDOUT "/dev/jtag"
+#define ALT_STDOUT_BASE 0x101040
+#define ALT_STDOUT_DEV jtag
+#define ALT_STDOUT_IS_JTAG_UART
+#define ALT_STDOUT_PRESENT
+#define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
 #define ALT_SYSTEM_NAME "nios_system"
-
-
-/*
- * de2_ps2_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_de2_ps2_0 de2_ps2
-#define DE2_PS2_0_BASE 0x101040
-#define DE2_PS2_0_IRQ -1
-#define DE2_PS2_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define DE2_PS2_0_NAME "/dev/de2_ps2_0"
-#define DE2_PS2_0_SPAN 1
-#define DE2_PS2_0_TYPE "de2_ps2"
 
 
 /*
@@ -194,6 +188,38 @@
 #define ALT_MAX_FD 32
 #define ALT_SYS_CLK none
 #define ALT_TIMESTAMP_CLK none
+
+
+/*
+ * jtag configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_jtag altera_avalon_jtag_uart
+#define JTAG_BASE 0x101040
+#define JTAG_IRQ 0
+#define JTAG_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define JTAG_NAME "/dev/jtag"
+#define JTAG_READ_DEPTH 64
+#define JTAG_READ_THRESHOLD 8
+#define JTAG_SPAN 8
+#define JTAG_TYPE "altera_avalon_jtag_uart"
+#define JTAG_WRITE_DEPTH 64
+#define JTAG_WRITE_THRESHOLD 8
+
+
+/*
+ * ps2 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_ps2 de2_ps2
+#define PS2_BASE 0x101048
+#define PS2_IRQ -1
+#define PS2_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define PS2_NAME "/dev/ps2"
+#define PS2_SPAN 1
+#define PS2_TYPE "de2_ps2"
 
 
 /*
