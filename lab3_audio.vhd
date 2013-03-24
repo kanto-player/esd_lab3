@@ -211,6 +211,11 @@ architecture datapath of lab3_audio is
           divider : in std_logic_vector(9 downto 0);
           clk_out : out std_logic);
   end component;
+
+  component counter is
+    port (clk   : in std_logic;
+          count : out unsigned(7 downto 0));
+  end component;
   
   component adder is
     port(a : in unsigned(7 downto 0);

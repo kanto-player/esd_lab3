@@ -4,11 +4,11 @@ use ieee.numeric_std.all;
 
 entity counter is
     port (clk   : in std_logic;
-          count : out unsigned(9 downto 0));
+          count : out unsigned(7 downto 0));
 end counter;
 
 architecture rtl of counter is
-    signal count_intern : unsigned(9 downto 0);
+    signal count_intern : unsigned(7 downto 0) := 0;
 begin
     count <= count_intern;
     process(clk)
