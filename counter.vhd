@@ -14,7 +14,11 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            count_intern <= count_intern + x"01";
+            if count_intern = x"f8" then
+                count_intern <= x"00";
+            else
+                count_intern <= count_intern + x"01";
+            end if;
         end if;
     end process;
 end;
