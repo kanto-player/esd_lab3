@@ -8,13 +8,13 @@ entity counter is
 end counter;
 
 architecture rtl of counter is
-    signal count_intern : unsigned(7 downto 0) := 0;
+    signal count_intern : unsigned(7 downto 0) := x"00";
 begin
     count <= count_intern;
     process(clk)
     begin
         if rising_edge(clk) then
-            count_intern <= count_intern + 1;
+            count_intern <= count_intern + x"01";
         end if;
     end process;
 end;
