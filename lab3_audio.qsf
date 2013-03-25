@@ -487,6 +487,7 @@ set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id addwrap_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME addwrap_tb -section_id addwrap_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE addwrap_tb.vhd -section_id addwrap_tb
 set_global_assignment -name SOPC_BUILDER_SIGNATURE_ID BC305BE679960000013D6B16CD86 -qip nios_system.qip
+set_global_assignment -name VHDL_FILE synth_top.vhd
 set_global_assignment -name VHDL_FILE sampler.vhd
 set_global_assignment -name VHDL_FILE wrapper.vhd
 set_global_assignment -name VHDL_FILE adder.vhd
