@@ -12,12 +12,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity lab3_audio is
-
-    note_div    : in std_logic_vector(9 downto 0);
-    mod_depth   : in std_logic_vector(3 downto 0);
-    volume      : in std_logic_vector(3 downto 0);
-    n_mute      : in std_logic;
-    
+  port(
     -- Clocks
     
     CLOCK_27,                                      -- 27 MHz
@@ -204,123 +199,22 @@ architecture datapath of lab3_audio is
   );
   end component;
 
-  component rshift is                                                         
-        port (number : in signed(15 downto 0);                                  
-              shiftby : in std_logic_vector(3 downto 0);                        
-              shifted : out signed(15 downto 0));                               
-  end component;
-
-  component frequency_divider is
-    port (clk     : in std_logic;
-          divider : in std_logic_vector(9 downto 0);
-          clk_out : out std_logic);
-  end component;
-
-  component counter is
-    port (clk   : in std_logic;
-          count : out unsigned(7 downto 0));
-  end component;
+  signal audio_en : std_logic;
+  signal note : unsigned(9 downto 0);
+  signal mod_depth : unsigned(3 downto 0);
+  signal volume : unsigned(3 downto 0);
+  signal audio_level : signed(15 downto 0);
   
-  component adder is
-    port(a : in unsigned(7 downto 0);
-         b : in signed(7 downto 0);
-         sum : out signed(9 downto 0));
-  end component;
+  signal nios_note : std_logic_vector(9 downto 0);
+  signal nios_mod_depth : std_logic_vector(3 downto 0);
+  signal nios_volume : std_logic_vector(3 downto 0);
   
-  component wrapper is
-    port(unwrapped : in signed(9 downto 0);
-         wrapped : out unsigned(7 downto 0));
-  end component;
-
-  signal div_clk : std_logic;
+  signal reset_n : std_logic;
   signal audio_clock : unsigned(1 downto 0) := "00";
   signal audio_request : std_logic;
-  signal shifted : signed(15 downto 0);
-  signal sum : signed(9 downto 0);
-  signal wrapped : unsigned(7 downto 0);
-  signal reset_n : std_logic := '1';
-
-  signal note_pointer_tmp : unsigned(7 downto 0);
-  signal note_pointer_raw : signed(9 downto 0);
-  signal note_pointer_aug : signed(9 downto 0);
-  signal note_pointer : unsigned(7 downto 0);
-  signal note_clk : std_logic;
-  signal note_amplitude : signed(15 downto 0);
-  signal note_amplitude_adjusted : signed(15 downto 0);
-  signal note_out : signed(15 downto 0);
-
-  signal mod_div : std_logic_vector(9 downto 0);
-  signal mod_pointer : unsigned(7 downto 0);
-  signal mod_clk : std_logic;
-  signal mod_amplitude : signed(15 downto 0);
-  signal mod_shift : signed(15 downto 0);
-  
+  signal audio_data : std_logic_vector(15 downto 0);
 begin
 
-  -- divides a 12.5Mhz clock to step through the sine rom
-  -- at the correct frequency to play a certain note
-  NOTE_DIVIDER : frequency_divider port map (
-    clk => div_clk,
-    divider => note_div,
-    clk_out => note_clk
-  );
-
-  -- the modulation frequency is 1/4 of the note frequency
-  -- so the divider needs to be four times greater
-  mod_div <= std_logic_vector(unsigned(note_div) sla 2);
-
-  -- divides a 12.5Mhz clock to step through the sine rom
-  -- at the correct frequency for the modulation
-  MOD_DIVIDER : frequency_divider port map (
-    clk => div_clk,
-    divider => mod_div,
-    clk_out => mod_clk
-  );
-
-  -- updates to point to the correct place in the sine rom
-  NOTE_COUNTER : counter port map (
-    clk => note_clk,
-    count => note_pointer_tmp
-  );
-
-  -- updates to point to the correct place in the sine rom
-  MOD_COUNTER : counter port map (
-    clk => mod_clk,
-    count => mod_pointer
-  );
-
-  SINROM : sinrom port map (
-    addr1 => note_pointer,
-    addr2 => mod_pointer,
-    value1 => note_amplitude,
-    value2 => mod_amplitude
-  );
-
-  MOD_DEPTH_SHIFTER : rshift port map (
-    number => mod_amplitude,
-    shiftby => mod_depth,
-    shifted => mod_shift
-  );
-
-  OUT_POINTER_SUMMER : adder port map (
-    a => note_pointer_tmp,
-    b => mod_shift,
-    sum => note_pointer_raw
-  );
-
-  note_pointer_aug <= note_pointer_raw mod 249;
-  note_pointer <= unsigned(note_pointer_aug(7 downto 0));
-
-  VOLUME_SHIFTER : rshift port map (
-    number => note_amplitude,
-    shiftby => volume,
-    shifted => note_amplitude_adjusted
-  );
-
-  note_out <= note_amplitude_adjusted when n_mute='1'
-              else (others => '0');
-
-  
   NIOS : entity work.nios_system port map (
     clk_0 => CLOCK_50,
     reset_n => reset_n,
@@ -334,33 +228,29 @@ begin
     SRAM_LB_N_from_the_sram      => SRAM_LB_N,
     SRAM_OE_N_from_the_sram      => SRAM_OE_N,
     SRAM_UB_N_from_the_sram      => SRAM_UB_N,
-    SRAM_WE_N_from_the_sram      => SRAM_WE_N
-
+    SRAM_WE_N_from_the_sram      => SRAM_WE_N,
+    
+    fm_synth_en_from_the_fm_synth => audio_en,
+    fm_synth_mod_depth_from_the_fm_synth => nios_mod_depth,
+    fm_synth_note_from_the_fm_synth => nios_note,
+    fm_synth_volume_from_the_fm_synth => nios_volume
   );
   
-  RS : rshift port map (
-    number => x"fffc",
-    shiftby => x"1",
-    shifted => shifted
-  );
+  mod_depth <= unsigned(nios_mod_depth);
+  volume <= unsigned(nios_volume);
+  note <= unsigned(nios_note);
 
-  FD : frequency_divider port map (
+  SYNTH : entity work.synth_top port map (
     clk => CLOCK_50,
-    divider => "0000000010",
-    clk_out => div_clk
+    en => audio_en,
+    note => note,
+    mod_depth => mod_depth,
+    volume => volume,
+    audio_out => audio_level
   );
   
-  ADD : adder port map (
-    a => x"f0",
-    b => x"0d",
-    sum => sum
-  );
+  audio_data <= std_logic_vector(audio_level);
   
-  WRAP : wrapper port map (
-    unwrapped => sum,
-    wrapped => wrapped
-  );
-
   process (CLOCK_50)
   begin
     if rising_edge(CLOCK_50) then
@@ -382,7 +272,7 @@ begin
     reset_n => reset_n,
     test_mode => '0',                   -- Output a sine wave
     audio_request => audio_request,
-    data => note_out,
+    data => audio_data,
   
     -- Audio interface signals
     AUD_ADCLRCK  => AUD_ADCLRCK,
