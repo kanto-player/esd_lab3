@@ -12,10 +12,7 @@
 
 typedef uint16_t ps2_code_t;
 
-/* Reads a single codeword from the keyboard
- * Returns a 2-byte integer
- * Least-significant byte contains one-byte code
- * Most-Significant byte has KEY_UP or EXTENDED bits set in it */
+/* Waits for a code to be available from the keyboard and returns it */
 ps2_code_t ps2_get_code(void);
 
 #endif /* PS2_H_ */
