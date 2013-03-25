@@ -12,7 +12,7 @@ entity ps2 is
 		avs_s1_chipselect : in  std_logic                    := '0';             --   avalon_slave_0.chipselect
 		avs_s1_readdata   : out std_logic_vector(7 downto 0);                    --                 .readdata
 		avs_s1_read       : in  std_logic                    := '0';             --                 .read
-		avs_s1_address    : in  std_logic_vector(0 downto 0) := (others => '0'); --                 .address
+		avs_s1_address    : in  std_logic_vector(2 downto 0) := (others => '0'); --                 .address
 		avs_s1_clk        : in  std_logic                    := '0';             --       clock_sink.clk
 		avs_s1_reset      : in  std_logic                    := '0';             -- clock_sink_reset.reset
 		PS2_Clk           : in  std_logic                    := '0';             --      conduit_end.export
@@ -26,7 +26,7 @@ architecture rtl of ps2 is
 			avs_s1_chipselect : in  std_logic                    := 'X';             -- chipselect
 			avs_s1_readdata   : out std_logic_vector(7 downto 0);                    -- readdata
 			avs_s1_read       : in  std_logic                    := 'X';             -- read
-			avs_s1_address    : in  std_logic_vector(0 downto 0) := (others => 'X'); -- address
+			avs_s1_address    : in  std_logic_vector(2 downto 0) := (others => 'X'); -- address
 			avs_s1_clk        : in  std_logic                    := 'X';             -- clk
 			avs_s1_reset      : in  std_logic                    := 'X';             -- reset
 			PS2_Clk           : in  std_logic                    := 'X';             -- export

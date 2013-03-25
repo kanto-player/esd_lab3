@@ -17,7 +17,7 @@ set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) "de2_ps2.v
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) "ps2.vhd"]
 # null
 set_global_assignment -name SDC_FILE [file join $::quartus(ip_rootpath) "altera/sopc_builder_ip/altera_avalon_clock_adapter/altera_avalon_clock_adapter.sdc"]
-set_global_assignment -name SOPC_BUILDER_SIGNATURE_ID "BC305BE679680000013D88700494"
+set_global_assignment -name SOPC_BUILDER_SIGNATURE_ID "BC305BE679960000013D9F3ED1A1"
 set_global_assignment -entity "nios_system" -name IP_TOOL_NAME "sopc"
 set_global_assignment -entity "nios_system" -name IP_TOOL_VERSION "12.1"
 set_global_assignment -entity "nios_system" -name IP_TOOL_ENV "sopc"

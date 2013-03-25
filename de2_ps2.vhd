@@ -174,7 +174,7 @@ entity de2_ps2 is
   port (
     avs_s1_clk        : in std_logic;
     avs_s1_reset      : in std_logic;
-    avs_s1_address    : in std_logic_vector(0 downto 0);
+    avs_s1_address    : in std_logic_vector(2 downto 0);
     avs_s1_read       : in std_logic;
     avs_s1_chipselect : in std_logic;
     avs_s1_readdata   : out std_logic_vector(7 downto 0);
@@ -211,7 +211,7 @@ begin
   process (Data, DataAvailable, avs_s1_address, avs_s1_chipselect)
   begin
     if avs_s1_chipselect = '1' then 
-      if avs_s1_address(0) = '1' then 
+      if avs_s1_address(2) = '1' then 
         avs_s1_readdata <= std_logic_vector(Data);
       else
         avs_s1_readdata <= "0000000" & DataAvailable;

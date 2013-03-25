@@ -508,14 +508,14 @@ SYSTEM nios_system
             }
             Entry jtag/avalon_jtag_slave
             {
-               address = "0x00101040";
+               address = "0x00101048";
                span = "0x00000008";
                is_bridge = "0";
             }
             Entry ps2/avalon_slave_0
             {
-               address = "0x00101048";
-               span = "0x00000002";
+               address = "0x00101040";
+               span = "0x00000008";
                is_bridge = "0";
             }
          }
@@ -1696,13 +1696,13 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00101040";
+               Offset_Address = "0x00101048";
             }
             IRQ_MASTER cpu_0/data_master
             {
                IRQ_Number = "0";
             }
-            Base_Address = "0x00101040";
+            Base_Address = "0x00101048";
             Address_Group = "0";
          }
       }
@@ -1863,10 +1863,9 @@ SYSTEM nios_system
             PORT avs_s1_address
             {
                type = "address";
-               width = "1";
+               width = "3";
                direction = "input";
                Is_Enabled = "1";
-               declare_one_bit_as_std_logic_vector = "1";
             }
          }
          SYSTEM_BUILDER_INFO 
@@ -1880,7 +1879,7 @@ SYSTEM nios_system
             Address_Alignment = "dynamic";
             Well_Behaved_Waitrequest = "0";
             Is_Nonvolatile_Storage = "0";
-            Address_Span = "2";
+            Address_Span = "8";
             Read_Latency = "0";
             Is_Memory_Device = "0";
             Maximum_Pending_Read_Transactions = "0";
@@ -1889,7 +1888,7 @@ SYSTEM nios_system
             Write_Latency = "0";
             Is_Flash = "0";
             Data_Width = "8";
-            Address_Width = "1";
+            Address_Width = "3";
             Maximum_Burst_Size = "1";
             Register_Incoming_Signals = "0";
             Register_Outgoing_Signals = "0";
@@ -1902,9 +1901,9 @@ SYSTEM nios_system
             MASTERED_BY cpu_0/data_master
             {
                priority = "1";
-               Offset_Address = "0x00101048";
+               Offset_Address = "0x00101040";
             }
-            Base_Address = "0x00101048";
+            Base_Address = "0x00101040";
             Address_Group = "0";
             IRQ_MASTER cpu_0/data_master
             {
