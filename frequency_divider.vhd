@@ -11,13 +11,13 @@ use ieee.numeric_std.all;
 --          inserting 3 as divider_count divides by 6, etc.
 entity frequency_divider is
     port (clk     : in std_logic;
-          divider : in std_logic_vector(9 downto 0);
+          divider : in unsigned(11 downto 0);
           clk_out : out std_logic);
 end frequency_divider;
 
 architecture rtl of frequency_divider is
-    signal divider_old  : std_logic_vector(9 downto 0) := (others => '0');
-    signal count        : unsigned(9 downto 0) := "0000000001";
+    signal divider_old  : unsigned(11 downto 0) := (others => '0');
+    signal count        : unsigned(11 downto 0) := x"001";
 begin
     process(clk)
     begin
@@ -28,11 +28,11 @@ begin
 
             -- if divider value changes, reset count
             if divider /= divider_old then
-                count <= (9 downto 1 => '0') & '1';
+                count <= x"001";
 
             -- if count reached, clock high and reset
-            elsif count = unsigned(divider) then
-                count <= (9 downto 1 => '0') & '1';
+            elsif count = divider then
+                count <= x"001";
                 clk_out <= '1';
 
             -- otherwise, just increment count

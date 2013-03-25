@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity rshift is
     port (number : in signed(15 downto 0);
-          shiftby : in std_logic_vector(3 downto 0);
+          shiftby : in unsigned(3 downto 0);
           shifted : out signed(15 downto 0));
 end rshift;
 
@@ -17,14 +17,14 @@ begin
     rss(0) <= number;
     SEL_MUX0 : entity work.multiplexer port map (
         input => rss(0),
-        sel => unsigned(shiftby),
+        sel => shiftby,
         output => shifted(0)
     );
     GEN_MUX : for i in 1 to 15 generate
         rss(i) <= ((i-1) downto 0 => copy_bit) & number(15 downto i);
         SEL_MUX : entity work.multiplexer port map (
                         input => rss(i),
-                        sel => unsigned(shiftby),
+                        sel => shiftby,
                         output => shifted(i));
     end generate GEN_MUX;
 end rtl;
