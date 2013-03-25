@@ -209,7 +209,7 @@ architecture datapath of lab3_audio is
   signal nios_mod_depth : std_logic_vector(3 downto 0);
   signal nios_volume : std_logic_vector(3 downto 0);
   
-  signal reset_n : std_logic;
+  signal reset_n : std_logic := '1';
   signal audio_clock : unsigned(1 downto 0) := "00";
   signal audio_request : std_logic;
   signal audio_data : std_logic_vector(15 downto 0);
