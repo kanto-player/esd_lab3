@@ -2,6 +2,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- SOPC component to control FM Synth
+-- Address 0 is note divider
+-- Address 16 is modulation depth
+-- Address 32 is volume
+-- Address 48 is enable (1) / disable (0)
+
 entity de2_fm_synth_control is
     port (
         clk        : in  std_logic;
@@ -39,7 +45,7 @@ begin
                             fm_synth_mod_depth <= writedata(3 downto 0);
                         when "10" =>
                             fm_synth_volume <= writedata(3 downto 0);
-                        when "11" =>
+                        when others =>
                             fm_synth_en <= writedata(0);
                     end case;
                 end if;
