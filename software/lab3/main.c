@@ -18,6 +18,16 @@
 #include "ps2.h"
 #include "fm_synth.h"
 
+static unsigned char mod_depth;
+static unsigned char volume;
+static unsigned char octave;
+
+#define OCTAVE_UP 0xfffa
+#define VOLUME_DEC 0xfffb
+#define VOLUME_INC 0xfffc
+#define MOD_DEPTH_DEC 0xfffd
+#define MOD_DEPTH_INC 0xfffe
+#define PS2_ERROR 0xffff
 
 unsigned short translate_ps2_code(ps2_code_t to_translate)
 {
@@ -79,9 +89,29 @@ unsigned short translate_ps2_code(ps2_code_t to_translate)
 	  	case 0xf0:
 	  		printf("BREAK CODE\n");
 	  		break;
+	  	case 0x1a:
+	  		printf("dec mod depth\n");
+	  		ret = MOD_DEPTH_DEC;
+	  		break;
+	  	case 0x22:
+	  		printf("inc mod depth\n");
+	  		ret = MOD_DEPTH_INC;
+	  		break;
+	  	case 0x21:
+	  		printf("dec volume\n");
+	  		ret = VOLUME_DEC;
+	  		break;
+	  	case 0x2a:
+	  		printf("inc volume\n");
+	  		ret = VOLUME_INC;
+	  		break;
+	  	case 0x29:
+	  		printf("octave up\n");
+	  		ret = OCTAVE_UP;
+	  		break;
 	  	default:
 	  		printf("some key we're ignoring.\n");
-	  		ret = 0xffff;
+	  		ret = PS2_ERROR;
 	  		break;
 	}
 
@@ -92,27 +122,66 @@ int main()
 {
 	ps2_code_t code, endcode;
 	unsigned short data_to_write = 0x0000;
+	unsigned short note = 0x0000;
 
 	printf("Hello from Nios II!\n");
 	printf("Yes, this is Dog.\n");
 
+	mod_depth = 6;
+	volume = 0;
+	octave = 0;
+
 	IOWR_ENABLE(0x00);
-	IOWR_MOD_DEPTH(0x06);
-	IOWR_VOLUME(0x00);
+	IOWR_MOD_DEPTH(mod_depth);
+	IOWR_VOLUME(volume);
 
 	printf("Start typing.\n");
 	for (;;) {
 		code = ps2_get_code();
 		if (!(data_to_write = translate_ps2_code(code))) {
 			endcode = ps2_get_code();
+			data_to_write = translate_ps2_code(endcode);
 
-			IOWR_ENABLE(0x00); /* enable off after receiving break code */
+			if (data_to_write < OCTAVE_UP)
+				IOWR_ENABLE(0x00); /* enable off after receiving break code */
+			else if (data_to_write == OCTAVE_UP) {
+				octave = 0;
+				IOWR_NOTE(note >> octave);
+			}
 
+		} else if (data_to_write == VOLUME_DEC) {
+			if (volume < 0xff) {
+				volume++;
+				printf("Volume now at %d\n", volume);
+				IOWR_VOLUME(volume);
+			}
+		} else if (data_to_write == VOLUME_INC) {
+			if (volume > 0) {
+				volume--;
+				printf("Volume now at %d\n", volume);
+				IOWR_VOLUME(volume);
+			}
+		} else if (data_to_write == MOD_DEPTH_DEC) {
+			if (mod_depth < 8) {
+				mod_depth++;
+				printf("Mod depth now at %d\n", mod_depth);
+				IOWR_MOD_DEPTH(mod_depth);
+			}
+		} else if (data_to_write == MOD_DEPTH_INC) {
+			if (mod_depth > 0) {
+				mod_depth--;
+				printf("Mod depth now at %d\n", mod_depth);
+				IOWR_MOD_DEPTH(mod_depth);
+			}
+		} else if (data_to_write == OCTAVE_UP) {
+			octave = 1;
+			IOWR_NOTE(note >> octave);
 		} else if (data_to_write == 0xffff){
 			  /* do nothing. */
 		} else {
 			printf("about to write the code\n");
-			IOWR_NOTE(data_to_write);
+			note = data_to_write;
+			IOWR_NOTE(note >> octave);
 			IOWR_ENABLE(0xff); /* enable high */
 		}
 
