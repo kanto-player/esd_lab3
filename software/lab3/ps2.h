@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-typedef uint16_t ps2_code_t;
+typedef unsigned char ps2_code_t;
 
 /* Waits for a code to be available from the keyboard and returns it */
 ps2_code_t ps2_get_code(void);

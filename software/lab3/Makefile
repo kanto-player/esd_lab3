@@ -144,6 +144,7 @@ ELF := lab3.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS += main.c
 C_SRCS += ps2.c
+C_SRCS += fm_synth.c
 CXX_SRCS :=
 ASM_SRCS :=
 

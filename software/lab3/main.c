@@ -15,8 +15,8 @@
  */
 
 #include <stdio.h>
-
 #include "ps2.h"
+#include "fm_synth.h"
 
 /*
  * for now this translates to an integer,
@@ -24,70 +24,70 @@
  * like an address offset, for when we go to write
  * to tone-corresponding registers.
  */
-int translate_ps2_code(ps2_code_t to_translate)
+unsigned short translate_ps2_code(ps2_code_t to_translate)
 {
-	int ret = 0;
+	unsigned short ret = 0;
 	switch(to_translate) {
-		case 0x1c: /* letter 'a'; middle c. */
+		case 0x1c: /* letter 'a'; low c. */
 			printf("letter a; middle c.\n");
 			/* add IOWRs for all of these, to the proper registers. */
-			ret = 1;
+			ret = 0x300;
 			break;
 	  	case 0x1d: /* letter 'w'; C# / Db */
 	  		printf("letter w; C# / Db\n");
-	  		ret = 2;
+	  		ret = 0x2d5;
 	  		break;
 	  	case 0x1b: /* letter 's'; D */
 	  		printf("letter s; D\n");
-	  		ret = 3;
+	  		ret = 0x2ac;
 	  		break;
 	  	case 0x24: /* letter 'e'; D# / Eb */
 	  		printf("letter e; D# / Eb\n");
-	  		ret = 4;
+	  		ret = 0x286;
 	  		break;
 	  	case 0x23: /* letter 'd'; E */
 	  		printf("letter d; E\n");
-	  		ret = 5;
+	  		ret = 0x262;
 	  		break;
 	  	case 0x2b: /* letter 'f'; F */
 	  		printf("letter f; F\n");
-	  		ret = 6;
+	  		ret = 0x234;
 	  		break;
 	  	case 0x2c: /* letter 't'; F# / Gb */
 	  		printf("letter t; F# / Gb\n");
-	  		ret = 7;
+	  		ret = 0x21f;
 	  		break;
 	  	case 0x34: /* letter 'g'; G */
 	  		printf("letter g; G\n");
-	  		ret = 8;
+	  		ret = 0x201;
 	  		break;
 	  	case 0x35: /* letter 'y'; G# / Ab */
 	  		printf("letter y; G# / Ab\n");
-	  		ret = 9;
+	  		ret = 0x1e4;
 	  		break;
 	  	case 0x33: /* letter 'h'; A */
 	  		printf("letter h; A\n");
-	  		ret = 10;
+	  		ret = 0x1c9;
 	  		break;
 	  	case 0x3c: /* letter 'u'; A# / Bb */
 	  		printf("letter u; A# / Bb\n");
-	  		ret = 11;
+	  		ret = 0x1af;
 	  		break;
 	  	case 0x3b: /* letter 'j'; B */
 	  		printf("letter j; B\n");
-	  		ret = 12;
+	  		ret = 0x197;
 	  		break;
-	  	case 0x42: /* letter 'k'; high C */
+	  	case 0x42: /* letter 'k'; middle C */
 	  		printf("letter k; high C\n");
-	  		ret = 13;
+	  		ret = 0x180;
 	  		break;
 	  	case 0xf0:
 	  		printf("BREAK CODE\n");
-	  		ret = 0;
 	  		break;
 	  	default:
-	  		ret = -1;
 	  		printf("some key we're ignoring.\n");
+	  		ret = 0xffff;
+	  		break;
 	}
 
 	return ret;
@@ -95,27 +95,41 @@ int translate_ps2_code(ps2_code_t to_translate)
 
 int main()
 {
-  printf("Hello from Nios II!\n");
-  printf("Yes, this is Dog.\n");
+	ps2_code_t code, endcode;
+	unsigned short data_to_write = 0x0000;
 
-  ps2_code_t code, endcode;
-  int translation;
+	printf("Hello from Nios II!\n");
+	printf("Yes, this is Dog.\n");
 
-  printf("Start typing.\n");
-  for (;;) {
-	  code = ps2_get_code();
-	  printf("Normal Code %x\n", (code & 0x00ff));
-	  if (!(translation = translate_ps2_code(code))) {
-		  endcode = ps2_get_code();
-		  printf("*****THE FOLLOWING KEYPRESS IS ENDING*****\n");
-		  translation = translate_ps2_code(endcode);
-		  printf("******************************************\n");
+	/* TODO: initialize fm_synth's register values. */
+	IOWR_ENABLE(0x00);
+	IOWR_MOD_DEPTH(0x06);
+	IOWR_VOLUME(0x00);
 
-	  } else {
-		  /* write the code to the proper register. */
-		  printf("about to write the code / translation.\n");
-	  }
-  } /* end for */
+	printf("Start typing.\n");
+	for (;;) {
+		code = ps2_get_code();
+		printf("Normal Code %x\n", (code & 0x00ff));
+		if (!(data_to_write = translate_ps2_code(code))) {
+			endcode = ps2_get_code();
 
-  return 0;
+			IOWR_ENABLE(0x00); /* enable off after receiving break code */
+
+			/*
+			printf("*****THE FOLLOWING KEYPRESS IS ENDING*****\n");
+			data_to_write = translate_ps2_code(endcode);
+			printf("******************************************\n");
+			*/
+
+		} else if (data_to_write == 0xffff){
+			  /* do nothing. */
+		} else {
+			printf("about to write the code\n");
+			IOWR_NOTE(data_to_write);
+			IOWR_ENABLE(0xff); /* enable high */
+		}
+
+	} /* end for */
+
+	return 0;
 }
