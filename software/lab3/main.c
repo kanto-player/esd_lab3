@@ -18,12 +18,7 @@
 #include "ps2.h"
 #include "fm_synth.h"
 
-/*
- * for now this translates to an integer,
- * later on we can translate it to something
- * like an address offset, for when we go to write
- * to tone-corresponding registers.
- */
+
 unsigned short translate_ps2_code(ps2_code_t to_translate)
 {
 	unsigned short ret = 0;
@@ -101,7 +96,6 @@ int main()
 	printf("Hello from Nios II!\n");
 	printf("Yes, this is Dog.\n");
 
-	/* TODO: initialize fm_synth's register values. */
 	IOWR_ENABLE(0x00);
 	IOWR_MOD_DEPTH(0x06);
 	IOWR_VOLUME(0x00);
@@ -109,17 +103,10 @@ int main()
 	printf("Start typing.\n");
 	for (;;) {
 		code = ps2_get_code();
-		printf("Normal Code %x\n", (code & 0x00ff));
 		if (!(data_to_write = translate_ps2_code(code))) {
 			endcode = ps2_get_code();
 
 			IOWR_ENABLE(0x00); /* enable off after receiving break code */
-
-			/*
-			printf("*****THE FOLLOWING KEYPRESS IS ENDING*****\n");
-			data_to_write = translate_ps2_code(endcode);
-			printf("******************************************\n");
-			*/
 
 		} else if (data_to_write == 0xffff){
 			  /* do nothing. */
